@@ -4,6 +4,7 @@ import Item from './Item'
 
 function Shop() {
     let m = "martin"
+    let a = "shop"
     const [cart,setCart,user,setUser,shop,setShop,itemID,setItemID,itemData,setItemData] = useContext(ShopContext)
     return (
         <div className='shop_container'>
