@@ -1,50 +1,39 @@
-import {React,useContext} from 'react'
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
+import {React,useContext,useState} from 'react'
 import {Link} from 'react-router-dom'
 import {ShopContext} from './Context'
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import StorefrontRoundedIcon from '@mui/icons-material/StorefrontRounded';
+import ShoppingBasketRoundedIcon from '@mui/icons-material/ShoppingBasketRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import RestoreRoundedIcon from '@mui/icons-material/RestoreRounded';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import axios from 'axios'
+import GradientOpenWithIcon from './GradientIcon';
+import User from './User'
+
 
 function Navigation() {
     const [cart,setCart,user,setUser,shop,setShop,itemID,setItemID,itemData,setItemData,total,setTotal] = useContext(ShopContext)
-    const showMenu = ()=>{
-        let navbar = document.querySelector('.navbar')
-        let toggler = document.querySelector('.fas')
-        if(navbar.classList.contains('navbar_show_toggler')){
-            navbar.classList.remove('navbar_show_toggler')
-            toggler.style.animation = 'moveToggler 750ms infinite'
-            toggler.classList.add('idle_toggler')
-            toggler.classList.remove('move_toggler')
-        }else{
-            navbar.classList.add('navbar_show_toggler')
-            toggler.style.animation = 'none'
-            toggler.classList.remove('idle_toggler')
-            toggler.classList.add('move_toggler')
-        }
-    }
+    const [value, setValue] = useState(0);
+
+    const handleChange = (newValue) => {
+      setValue(newValue);
+    };
 
 
     return (
         <div className='navbar_container'>
-            <Navbar expand="lg" variant='dark'>
-                <Navbar.Brand><Link to='/api/profile'>Technest</Link></Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                    <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                        <Nav.Item><Link to='/api/shop'>Shop</Link></Nav.Item>
-                        <Nav.Item><Link to='/api/cart'>Cart</Link></Nav.Item>
-                        <Nav.Item><Link to='/api/favourites'>Favourites</Link></Nav.Item>
-                        <Nav.Item><Link to='/api/purchase-history'>Purchase History</Link></Nav.Item>
-                    </NavDropdown>
-                    <Nav.Link href="/api/logout">Logout</Nav.Link>
-                    </Nav>
-                    <Nav>
-                    <Nav.Link>Welcome {user.name}</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
-            <i onClick={showMenu} className="fas fa-bars idle_toggler"></i>
+            <h2 style={{marginLeft:"15px"}}>Technest</h2>
+                <Tabs value={value} onChange={handleChange} aria-label="icon label tabs example">
+                    <Link onClick={()=>handleChange(0)} className="nav_link_tab" to="/api/shop"><Tab icon={<GradientOpenWithIcon icon={<StorefrontRoundedIcon sx={{ fill: "url(#linearColors)" }} />}/>} label="SHOP" /></Link>
+                    <Link onClick={()=>handleChange(1)} className="nav_link_tab" to="/api/cart"><Tab icon={<GradientOpenWithIcon icon={<ShoppingBasketRoundedIcon sx={{ fill: "url(#linearColors)" }} />}/>} label="BASKET" /></Link>
+                    <Link onClick={()=>handleChange(2)} className="nav_link_tab" to="/api/favourites"><Tab icon={<GradientOpenWithIcon icon={<FavoriteRoundedIcon sx={{ fill: "url(#linearColors)" }} />}/>} label="FAVOURITES" /></Link>
+                    <Link onClick={()=>handleChange(3)} className="nav_link_tab" to="/api/purchase-history"><Tab icon={<GradientOpenWithIcon icon={<RestoreRoundedIcon sx={{ fill: "url(#linearColors)" }} />}/>} label="HISTORY" /></Link>
+                    <Link onClick={()=>axios.get('/api/logout').then(()=>window.location.reload())} className="nav_link_tab"><Tab icon={<GradientOpenWithIcon icon={<ExitToAppIcon sx={{ fill: "url(#linearColors)" }} />}/>} label="LOGOUT" /></Link>
+                </Tabs>
+
+                <User/>
         </div>
     )
 }

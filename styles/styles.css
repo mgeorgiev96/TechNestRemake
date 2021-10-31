@@ -26,7 +26,7 @@ body{
     font-size: 2rem;
 }
 form{
-    margin: 2% auto;
+    margin: 1% auto;
     box-shadow: 0 0 5px lightgray;
     display: flex;
     flex-flow: column;
@@ -116,4 +116,10 @@ input[type=submit]:hover{
 input[type=submit]:active{
     transform: scale(1.05);
     transition: 250ms;
+}
+
+@media all and (max-width:900px){
+    .bg{
+        display: none;
+    }
 }

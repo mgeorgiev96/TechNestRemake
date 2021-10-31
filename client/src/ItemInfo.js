@@ -1,6 +1,5 @@
 import {React,useContext, useEffect} from 'react'
 import {ShopContext} from './Context'
-import axios from 'axios'
 import ItemSpecific from './ItemSpecific'
 
 function ItemInfo() {

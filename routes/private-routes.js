@@ -16,10 +16,6 @@ const userAuth = (req,res,next)=>{
 }
 
 
-
-router.get('/profile',userAuth,(req,res)=>{
-    res.sendFile(path.join(__dirname,'../client/build/index.html'))
-})
 router.get('/item-info',userAuth,(req,res)=>{
     res.sendFile(path.join(__dirname,'../client/build/index.html'))
 })
@@ -72,7 +68,7 @@ router.post('/login',(req,res)=>{
                         name: user.name,
                         favourites: user.favourites
                     }
-                    res.redirect('/api/profile')
+                    res.redirect('/api/shop')
                 }else{
                     res.redirect('/wrong-password')
                 }
@@ -108,7 +104,7 @@ router.get('/google',passport.authenticate('google',{
 
 router.get('/google/redirect',passport.authenticate('google'),(req,res)=>{
     req.session.user = null
-    res.redirect('/api/profile')
+    res.redirect('/api/shop')
 })
 
 //Add Favourite
@@ -152,6 +148,7 @@ router.post('/save-favourite',(req,res)=>{
 
 //Remove Favourite
 router.post('/remove-favourite',(req,res)=>{
+    console.log(req.body)
     User.update({username:req.body.user},{
         $pull: {favourites:{id:req.body.id}}
     }).then(()=>{
@@ -233,7 +230,8 @@ router.post('/payment',(req,res)=>{
 
 //Delete Purchase History Item
 router.post('/delete-payment',(req,res)=>{
-    User.update({username:req.body.username},{
+    console.log(req.body)
+    User.updateOne({username:req.body.username},{
         $pull: {history: {id:req.body.id}}
     }).then(()=>{
         User.findOne({username:req.body.username}).then(user=>{
@@ -259,6 +257,14 @@ router.post('/delete-payment',(req,res)=>{
                 res.send(req.session.user)
             }
         }).catch(err=>console.log(err))
+    }).catch(err=>console.log(err))
+})
+
+
+router.post("/item-information",(req,res)=>{
+    User.findOne({username:"AdminStorage"}).then(user=>{
+        let item = user.items.filter(i=> i.id === req.body.ID)
+        res.json(item[0])
     }).catch(err=>console.log(err))
 })
 

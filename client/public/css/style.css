@@ -12,6 +12,9 @@ body {
   background-size: cover;
 }
 
+
+
+
 .home_container {
   width: 100vw;
   height: 100vh;
@@ -25,7 +28,7 @@ body {
 .item_specific {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (50%)[2];
+  -ms-grid-columns: (50%);
       grid-template-columns: repeat(2, 50%);
   width: 50%;
   height: 60vh;
@@ -245,7 +248,7 @@ body {
   width: 90%;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (30%)[3];
+  -ms-grid-columns: (30%);
       grid-template-columns: repeat(3, 30%);
   -webkit-box-pack: center;
       -ms-flex-pack: center;

@@ -36,14 +36,13 @@ function ItemSpecific(props) {
     return (
         <div className='item_specific'>
             <div className='item_description'>
-                <h3>{props.name}</h3>
+                <h3>{props.name} - {props.price}$</h3>
                 <ul>
                     {props.description ? props.description.map(desc=><li>{desc}</li>) : ''}
                 </ul>
             </div>
             <Carousel>
                 <Carousel.Item>
-                    <span>{props.price}$</span>
                     <img
                     className="d-block w-100"
                     src={props.image[0]}
@@ -53,7 +52,6 @@ function ItemSpecific(props) {
                     <i className="fas fa-heart" onClick={saveFavourite}></i>
                 </Carousel.Item>
                 <Carousel.Item>
-                   <span>{props.price}$</span>
                     <img
                     className="d-block w-100"
                     src={props.image[1]}

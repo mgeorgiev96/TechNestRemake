@@ -1,28 +1,48 @@
 import {React,useContext} from 'react'
-import FavouriteItem from './FavouriteItem'
 import {ShopContext} from './Context'
+import axios from 'axios'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function Favourites() {
-    const [cart,setCart,user,setUser,shop,setShop,itemID,setItemID,itemData,setItemData] = useContext(ShopContext)
+  const [cart,setCart,user,setUser,shop,setShop,itemID,setItemID,itemData,setItemData,total,setTotal,ratings,setRatings] = useContext(ShopContext)
+
+
+  const removeFavourite = (id) =>{
+      axios.post("/api/remove-favourite",{user:user.username,id}).then(user=>setUser(user))
+
+  }
     return (
-        <div className='favourite_container'>
-            <table className="table table-bordered border-light table-dark">
-                <thead>
-                    <tr>
-                        <th className='heading_col' scope='col' colspan="5">Favourites</th>
-                    </tr>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col"></th>
-                    <th scope="col">Name</th>
-                    <th scope="col" colspan="2">Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {user? user.favourites.map((item,i)=><FavouriteItem id={item.id} index={i} image={item.images} name={item.name} price={item.price}/>):''}
-                </tbody>
-            </table>
-        </div>
+      
+      <div className="cart_container" style={{display:"flex",alignItems:'center',flexFlow:"column"}}> 
+      <div className="cart_header">
+         <h1 style={{textAlign:"center",color:"black",display:"flex",alignItems:"center"}}>Favourites</h1> 
+      </div>         
+          <List className="cart_container_items" sx={{margin: "0 auto" }}>
+       {user.favourites && user.favourites.length > 0 ? user.favourites.map((item) => {
+        return (
+          <ListItem
+            key={item.id}
+            secondaryAction={
+              <CancelIcon onClick={()=> removeFavourite(item.id)} className="remove_cart_item"/>
+            }
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemAvatar>
+                <div className="img_holder" style={{backgroundImage: `url(${item.images})`}}></div>
+              </ListItemAvatar>
+              <span  className="item_text">{`${item.name} - ${item.price}$.`}</span>
+            </ListItemButton>
+          </ListItem>
+        );
+      }):<ListItem><span  className="item_text">No Results</span></ListItem>}
+    </List>
+      </div>
+      
     )
 }
 
